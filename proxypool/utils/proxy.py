@@ -1,7 +1,21 @@
+import requests
+
 from proxypool.schemas import Proxy
 
 
+def test_ip_active(ip):
+    try:
+        _ = requests.get('http://icanhazip.com/', proxies={"http": 'http://' + ip}, timeout=0.1)
+        return True
+    except:
+        print("失效代理：" + ip)
+        return False
+
+
 def is_valid_proxy(data):
+    if not test_ip_active(data):
+        return False
+
     """
     check this string is within proxy format
     """
